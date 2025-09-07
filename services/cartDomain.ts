@@ -82,15 +82,15 @@ export type CartCommand =
   | { type: "CLEAR" };
 
   export function reduceCart(prev: CartState, cmd: CartCommand): CartState {
-
+    console.log("Cart command:", cmd.type);
     switch(cmd.type) {
         case "ADD": {
             const items = upsert(prev.items, cmd.product, cmd.qty ?? 1);
-            return {...prev, items, totals: computeTotals(prev.items, prev.coupon)}
+            return {...prev, items, totals: computeTotals(items, prev.coupon)}
         }
         case "INC": {
             const items = upsert(prev.items, cmd.product, +1);
-            return { ...prev, items, totals: computeTotals(prev.items, prev.coupon )}
+            return { ...prev, items, totals: computeTotals(items, prev.coupon )}
         }
         case "DEC": {
             const items = upsert(prev.items, cmd.product, -1);
@@ -106,7 +106,7 @@ export type CartCommand =
           }
           case "CLEAR":
             return { ...initialCartState };
-            
+
         default:
             return prev;
     }

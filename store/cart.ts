@@ -14,15 +14,19 @@ export const useCartStore = create<CartState & CartActions>()(
             (set, get) => ({
                 ...initialCartState,
 
-                dispatch: (cmd) => {
+                dispatch: (cmd: CartCommand) => {
                     const next = reduceCart(get(), cmd);
-                    set(next, false, `cart/${cmd.type}`);
+                    set(next); 
                 }
             }),
             {
                 name: 'cart-v2',
                 storage: createJSONStorage(() => AsyncStorage),
                 partialize: (s) => ({ items: s.items, coupon: s.coupon }),
+                onRehydrateStorage: () => (state) => {
+                    console.log("Storage rehydrated:", state);
+                  },
+                version: 1
             }
         )
     )
