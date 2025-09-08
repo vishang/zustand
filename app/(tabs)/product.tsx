@@ -1,7 +1,8 @@
 // app/(tabs)/product.tsx
 import { useCart } from "@/hooks/useCart";
+import { useResponsiveFont } from "@/ui/typography";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const demo = { id: "p1", name: "Demo Product", price: 999, stock: 10 };
 
@@ -23,7 +24,7 @@ export default function ProductScreen() {
       }}
     >
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>{product.name}</Text>
-      <Text>Price: ₹{product.price}</Text>
+      <Text style={styles.box}>Price: ₹{product.price}</Text>
       <Text>Stock: {product.stock}</Text>
       <Text>In Cart: {qty}</Text>
 
@@ -62,3 +63,11 @@ export default function ProductScreen() {
     </View>
   );
 }
+const titleFS = useResponsiveFont(24, { max: 32 }); // 24→~28 on tablet
+const bodyFS = useResponsiveFont(15, { min: 13, max: 18 });
+
+const styles = StyleSheet.create({
+  box: {
+    fontSize: titleFS,
+  },
+});
